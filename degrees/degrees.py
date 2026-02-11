@@ -88,12 +88,40 @@ def shortest_path(source, target):
     """
     Returns the shortest list of (movie_id, person_id) pairs
     that connect the source to the target.
-
-    If no possible path, returns None.
     """
+    # Si origen y destino son iguales
+    if source == target:
+        return []
 
-    # TODO
-    raise NotImplementedError
+    # Inicializar nodo y frontera (QueueFrontier garantiza BFS / camino más corto)
+    start = Node(state=source, parent=None, action=None)
+    frontier = QueueFrontier()
+    frontier.add(start)
+
+    # Conjunto para evitar ciclos
+    explored = set()
+
+    while True:
+        if frontier.empty():
+            return None
+
+        node = frontier.remove()
+        explored.add(node.state)
+
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                child = Node(state=state, parent=node, action=action)
+
+                # Verificación inmediata del objetivo
+                if child.state == target:
+                    path = []
+                    while child.parent is not None:
+                        path.append((child.action, child.state))
+                        child = child.parent
+                    path.reverse()
+                    return path
+
+                frontier.add(child)
 
 
 def person_id_for_name(name):

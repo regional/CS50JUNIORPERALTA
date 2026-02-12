@@ -14,9 +14,7 @@ movies = {}
 
 # Maps movie_ids to a dictionary of: title, year, stars (a set of person_ids)
 def load_data(directory):
-    """
-    Load data from CSV files into memory.
-    """
+  
     # Load people
     with open(f"{directory}/people.csv", encoding="utf-8") as f:
         reader = csv.DictReader(f)
